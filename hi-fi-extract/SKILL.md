@@ -5,7 +5,7 @@ description: Extracts structured inspiration data from a URL and adds it to your
 
 # hi-fi Extract
 
-This skill takes a URL, analyzes the page, and produces a structured entry for your hi-fi inspiration repo (`~/.claude/skills/hi-fi/REPO.md`).
+This skill takes a URL, analyzes the page, and produces a structured entry for your hi-fi inspiration repo (`~/.claude/skills/hi-fi-me/REPO.md`).
 
 ## Workflow
 
@@ -116,7 +116,7 @@ Note: `thumbnail_url` is intentionally left blank. If you already have a thumbna
 **Single URL:** When confirmed (e.g. "save it", "looks good", "yes", "ship it"):
 
 1. Ask: "Any notes on when to use this? (optional — press Enter to skip)"
-2. Read `~/.claude/skills/hi-fi/REPO.md`, append the entry, write the file back
+2. Read `~/.claude/skills/hi-fi-me/REPO.md`, append the entry, write the file back
 3. If a comment was provided: insert a `**Comments:**` section before the entry's closing `---`
 4. Auto-commit and push (see below)
 
@@ -126,7 +126,7 @@ Report: "Added **[title]** to your hi-fi repo. You now have N items."
 
 **Multiple URLs:** After all URLs are processed (each confirmed or skipped):
 
-1. Read `~/.claude/skills/hi-fi/REPO.md`
+1. Read `~/.claude/skills/hi-fi-me/REPO.md`
 2. Append all confirmed entries at once
 3. Write the file back
 4. Ask once: "Any notes on any of these? (e.g. '1: good for onboarding, 3: use for dense charts' — or skip)"

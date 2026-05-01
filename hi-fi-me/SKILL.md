@@ -55,7 +55,7 @@ Then continue regardless — don't block. If git isn't configured or the command
 
 ### 4. Read the repo
 
-Read the file at `~/.claude/skills/hi-fi/REPO.md`.
+Read the file at `~/.claude/skills/hi-fi-me/REPO.md`.
 
 - If the file is missing or the Items section is empty: report and stop.
   > "Your hi-fi repo is empty. Run `/hi-fi-extract <url>` to add items, or `/hi-fi sync` to pull from the hi-fi-me server (if it's running)."
@@ -158,7 +158,7 @@ Web references are **not** injected into the enhanced prompt automatically — p
 
 ## Show Gallery
 
-Read `~/.claude/skills/hi-fi/REPO.md` and generate a self-contained HTML file at `/tmp/hi-fi-gallery.html`.
+Read `~/.claude/skills/hi-fi-me/REPO.md` and generate a self-contained HTML file at `/tmp/hi-fi-gallery.html`.
 
 **Style:**
 - Background: `#000000`, text: `#ffffff`
@@ -204,7 +204,7 @@ Pull items from a hi-fi-me server into REPO.md.
    ```
    This returns REPO.md-formatted entries as plain text.
 
-3. Read the current `~/.claude/skills/hi-fi/REPO.md`. Parse existing item ids from frontmatter.
+3. Read the current `~/.claude/skills/hi-fi-me/REPO.md`. Parse existing item ids from frontmatter.
 
 4. For each item from the server:
    - If its `id` already exists in REPO.md: update the title, description, categories, tags, thumbnail_url — but **preserve** any existing `**Glossary:**` section for that entry (glossary was hand-enriched, don't overwrite it)
