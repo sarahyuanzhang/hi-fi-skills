@@ -3,8 +3,7 @@ name: hi-fi-me
 description: Enhances a UI-building prompt with visual inspiration references from the shared hi-fi inspiration repo. Invoke when the user says "hi-fi my prompt", "hi-fi this", "enhance this prompt with inspiration", "add visual references", "/hi-fi-me", or provides a UI design prompt and wants to enrich it with concrete references. Also trigger when the user is about to send a prompt to an AI agent for building UI and wants to inject relevant visual/code references first.
 ---
 
-> **Setup:** Replace `YOUR_GITHUB_USERNAME` in step 3 below with the GitHub username where the
-> hi-fi-skills repo is hosted. Do this once before pasting these instructions into your Project.
+> **Setup:** Paste these instructions into a Claude.ai Project's custom instructions. No other configuration needed.
 >
 > Note: Gallery view (`/hi-fi show`) and sync (`/hi-fi sync`) require Claude Code. To extract
 > and add new items to the repo, use `/hi-fi-extract` in Claude Code (terminal).
@@ -43,7 +42,7 @@ If the prompt is specific enough, skip this step.
 
 Use the **WebFetch** tool to retrieve:
 ```
-https://raw.githubusercontent.com/YOUR_GITHUB_USERNAME/hi-fi-skills/main/hi-fi-me/REPO.md
+https://raw.githubusercontent.com/sarahyuanzhang/hi-fi-skills/main/hi-fi-me/REPO.md
 ```
 
 This always returns the latest version of the catalog — no local setup or `git pull` needed.
