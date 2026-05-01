@@ -161,3 +161,25 @@ added: 2026-05-01
 - *order-chaos duality*: a compositional technique where a single continuous parameter moves between structured and entropic arrangements
 
 ---
+
+---
+id: colormap-curves-palette-designer
+title: Colormap Curves — Perceptual Palette Designer
+source_url: https://pair-code.github.io/colormap/curves/
+thumbnail_url:
+categories: [data-viz, UI-pattern]
+tags: [color-scale, palette-design, diverging-palette, lab-colorspace, hcl-colorspace, cubehelix, basis-spline, curve-editor, interactive, drag, perceptual-uniformity, colorblind-accessible, hex-export, d3]
+added: 2026-05-01
+---
+
+**Description:** A Google PAIR tool for designing multi-stop color scales by editing per-channel interpolation curves across five color spaces simultaneously: L*a*b*, HCL, Cubehelix, HSL, and RGB. For each space it renders both a basis-spline and linear interpolation side by side as horizontal gradient swatches, then exposes draggable control points per channel (lightness, hue, chroma/saturation, red/green/blue) to shape how the scale transitions. Outputs a full hex array for a configurable number of stops (default 255), with particular design support for diverging palettes — two hue extremes meeting at a neutral midpoint.
+
+**Glossary:**
+- *diverging palette*: a color scale with contrasting hues at each end and a neutral (gray/white) midpoint, used for data with a meaningful center value (e.g. zero, median)
+- *basis-spline interpolation*: smooth curve fitting using B-spline basis functions — produces gentler, more organic transitions than piecewise linear interpolation between the same control points
+- *L*a*b* (CIELAB)*: perceptually uniform color space where equal numerical distances correspond to equal perceived color differences; channels are L* (lightness), a* (red–green axis), b* (blue–yellow axis)
+- *HCL*: Hue-Chroma-Lightness — cylindrical reparameterization of L*a*b*, more intuitive for palette design since hue and chroma are independent of lightness
+- *Cubehelix*: a color scheme system by Dave Green (2011) that spirals through RGB space to guarantee monotonically increasing perceived brightness regardless of display type
+- *per-channel curve editing*: adjusting each dimension of a color space independently with a spline editor, allowing fine control over e.g. lightness arc without affecting hue
+
+---
