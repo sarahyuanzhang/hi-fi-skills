@@ -27,6 +27,9 @@ added: <YYYY-MM-DD>
 - *term*: definition useful to an LLM agent reading this as context
 - *term*: definition
 
+**Comments:** *(optional — omit section if empty)*
+- [note on when/how to use this reference, e.g. "good for onboarding flows with progressive disclosure"]
+
 ---
 ```
 
@@ -134,6 +137,27 @@ added: 2026-05-01
 - *document outline*: 
 - *nested list structure*: 
 - *sidebar layout*: 
-- *information architecture*: 
+- *information architecture*:
+
+---
+
+---
+id: order-vs-chaos-dot-interpolation
+title: Order vs. Chaos — Interactive Dot Interpolation
+source_url: http://www.generative-gestaltung.de/2/sketches/?02_M/M_1_2_01
+thumbnail_url:
+categories: [illustration, animation, UI-pattern]
+tags: [p5js, lerp, interactive, mouse-driven, circle-layout, random-seed, order-chaos, generative, canvas, particles, deterministic-random, smooth-transition, seeded-random]
+added: 2026-05-01
+---
+
+**Description:** A p5.js sketch that interpolates 150 dots between a fully random scatter and a perfect circle arrangement, with mouse X position controlling the blend in real time. Uses `lerp()` to smoothly mix two coordinate systems — random (chaos) and evenly-angularly-spaced circular (order) — creating a live slider between entropy and geometry. Click to reshuffle the random seed while preserving the interpolation fader position.
+
+**Glossary:**
+- *lerp*: linear interpolation — blends two values by a factor t ∈ [0,1]; used here to mix x/y positions between random and circular targets
+- *randomSeed*: a fixed integer passed to p5's random() to make it produce the same sequence every frame, ensuring the "random" layout is stable until clicked
+- *faderX*: mouse X normalized to 0–1, used as the t parameter in lerp() — left is pure chaos, right is pure circle
+- *angular distribution*: equal spacing of 360/count degrees per dot, placing them evenly around a circle of radius 300
+- *order-chaos duality*: a compositional technique where a single continuous parameter moves between structured and entropic arrangements
 
 ---

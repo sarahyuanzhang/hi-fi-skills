@@ -66,6 +66,7 @@ From the REPO.md entries, select the 3–5 most relevant items for the prompt. C
 - **Description** — does the visual/technical approach match what the prompt is asking for?
 - **Glossary terms** — do the defined terms help explain the technique the prompt needs?
 - **Tags and categories** — do they align with the surface type, motion style, or data type in the prompt?
+- **Comments** — does the user's note explicitly call out a use case that matches the current prompt? A comment that directly mentions the prompt's context (e.g. "good for onboarding" when the prompt is about onboarding) should boost this item's relevance above tag/description-only matches.
 
 For each selected item, identify the specific phrase in the original prompt it best annotates. Rewrite the prompt with inline annotations:
 - If item has `source_url`: `[see: Title](source_url)`

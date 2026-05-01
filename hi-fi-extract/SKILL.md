@@ -111,6 +111,22 @@ When confirmed (e.g. "save it", "looks good", "yes", "ship it"):
 
 Report: "Added **[title]** to your hi-fi repo. You now have N items."
 
+Then ask:
+> "Any notes on when to use this? (optional — press Enter to skip)"
+
+If a comment is provided (anything other than empty/skip/no/nope):
+1. Re-read `~/.claude/skills/hi-fi/REPO.md`
+2. Find the entry just saved (by its id)
+3. Insert a `**Comments:**` section before its closing `---`:
+   ```
+   **Comments:**
+   - [their comment]
+   ```
+4. Write the file back
+5. Use commit message `"add: [title] (with note)"` below
+
+If skipped: use commit message `"add: [title]"` below.
+
 Then auto-commit and push:
 ```bash
 cd ~/hi-fi-skills && git add hi-fi/REPO.md && git commit -m "add: [title]" && git push 2>&1
