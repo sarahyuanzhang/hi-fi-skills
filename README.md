@@ -31,15 +31,13 @@ That's it. Open Claude Code and try `/hi-fi show` to verify the gallery works.
 ## Adding inspiration
 
 ```bash
-# In Claude Code:
+# In Claude Code — single URL:
 /hi-fi-extract https://codepen.io/some-cool-demo
 
-# Claude will analyze the page, propose an entry, and write it to REPO.md on confirmation.
-# Then share it:
-cd ~/hi-fi-skills
-git add hi-fi/REPO.md
-git commit -m "add: Title of the thing"
-git push
+# Or multiple URLs at once:
+/hi-fi-extract https://codepen.io/demo1 https://observablehq.com/@d3/example https://shadertoy.com/view/abc
+
+# Claude proposes entries one-by-one, writes all confirmed ones in a single commit, and pushes automatically.
 ```
 
 ## Getting teammates' additions
@@ -47,6 +45,21 @@ git push
 ```bash
 cd ~/hi-fi-skills && git pull
 ```
+
+---
+
+## Using in Claude.ai
+
+No Claude Code? Use the skill in a [Claude.ai Project](https://claude.ai/projects) instead.
+
+1. Open your Project → **Settings → Custom Instructions**
+2. Paste the contents of [`hi-fi/SKILL.claude-ai.md`](hi-fi/SKILL.claude-ai.md)
+3. Replace `YOUR_GITHUB_USERNAME` with the GitHub username hosting this repo
+4. Say: "hi-fi this prompt: [your prompt]"
+
+REPO.md is fetched live from GitHub on every run — no `git pull` needed by anyone.
+
+> Extraction (`/hi-fi-extract`) still requires Claude Code. Gallery view (`/hi-fi show`) also requires Claude Code.
 
 ---
 

@@ -9,10 +9,17 @@ This skill takes a URL, analyzes the page, and produces a structured entry for y
 
 ## Workflow
 
-### 1. Get the URL
+### 1. Get the URL(s)
 
-Use the URL provided inline with `/hi-fi-extract`. If no URL was given, ask:
-> "What URL do you want to extract?"
+Use the URL(s) provided inline with `/hi-fi-extract`. Multiple URLs can be passed space-separated
+or newline-separated (e.g. `/hi-fi-extract url1 url2 url3`).
+
+If no URL was given, ask:
+> "What URL(s) do you want to extract? You can paste multiple at once."
+
+**For multiple URLs:** Process them in sequence — fetch, propose, confirm one at a time (steps 2–5
+below). Track which entries are confirmed. After all URLs are processed, do a single REPO.md write
+and a single git commit (step 6). Show progress as "Entry N of M" in the header of each proposal.
 
 ### 2. Fetch the page
 
@@ -72,6 +79,8 @@ Example format:
 
 ### 5. Show the proposed entry
 
+If processing multiple URLs, prefix with: **Entry N of M** (e.g. "**Entry 2 of 4**")
+
 Display the full REPO.md block in a fenced code block for review:
 
 ````
@@ -96,40 +105,46 @@ added: <today's date YYYY-MM-DD>
 ````
 
 Then ask:
-> "Does this look right? Say 'save it' to add to your repo, or tell me what to change."
+> "Does this look right? Say 'save it' to add, 'skip' to skip this one, or tell me what to change."
+
+For multiple URLs, accepted responses: "save it" / "yes" / "looks good" → queue for saving; "skip" / "no" → discard and move to next URL.
 
 Note: `thumbnail_url` is intentionally left blank. If you already have a thumbnail URL, paste it in before confirming.
 
 ### 6. Write to REPO.md on confirmation
 
-When confirmed (e.g. "save it", "looks good", "yes", "ship it"):
+**Single URL:** When confirmed (e.g. "save it", "looks good", "yes", "ship it"):
 
-1. Read `~/.claude/skills/hi-fi/REPO.md`
-2. Find the `## Items` section (the last section in the file)
-3. Append the new entry after the existing items, before the final comment if any
-4. Write the file back
+1. Ask: "Any notes on when to use this? (optional — press Enter to skip)"
+2. Read `~/.claude/skills/hi-fi/REPO.md`, append the entry, write the file back
+3. If a comment was provided: insert a `**Comments:**` section before the entry's closing `---`
+4. Auto-commit and push (see below)
 
 Report: "Added **[title]** to your hi-fi repo. You now have N items."
 
-Then ask:
-> "Any notes on when to use this? (optional — press Enter to skip)"
+---
 
-If a comment is provided (anything other than empty/skip/no/nope):
-1. Re-read `~/.claude/skills/hi-fi/REPO.md`
-2. Find the entry just saved (by its id)
-3. Insert a `**Comments:**` section before its closing `---`:
-   ```
-   **Comments:**
-   - [their comment]
-   ```
-4. Write the file back
-5. Use commit message `"add: [title] (with note)"` below
+**Multiple URLs:** After all URLs are processed (each confirmed or skipped):
 
-If skipped: use commit message `"add: [title]"` below.
+1. Read `~/.claude/skills/hi-fi/REPO.md`
+2. Append all confirmed entries at once
+3. Write the file back
+4. Ask once: "Any notes on any of these? (e.g. '1: good for onboarding, 3: use for dense charts' — or skip)"
+   - If notes are provided: parse by number, insert `**Comments:**` sections into the appropriate entries
+   - If skipped: proceed
+5. Report: "Added N items to your hi-fi repo (skipped M). You now have X total."
 
-Then auto-commit and push:
+---
+
+**Commit message:**
+- Single, no comment: `"add: [title]"`
+- Single, with comment: `"add: [title] (with note)"`
+- Multiple: `"add: [title1], [title2]..."` (truncate at ~60 chars, append `"..."` if needed)
+- Multiple, with notes: same as above + `" (with notes)"`
+
+**Auto-commit and push:**
 ```bash
-cd ~/hi-fi-skills && git add hi-fi/REPO.md && git commit -m "add: [title]" && git push 2>&1
+cd ~/hi-fi-skills && git add hi-fi/REPO.md && git commit -m "[commit message]" && git push 2>&1
 ```
 
 - If it succeeds: report "Pushed to the shared repo ✓"
