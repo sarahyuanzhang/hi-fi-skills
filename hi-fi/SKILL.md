@@ -68,10 +68,21 @@ From the REPO.md entries, select the 3–5 most relevant items for the prompt. C
 - **Tags and categories** — do they align with the surface type, motion style, or data type in the prompt?
 - **Comments** — does the user's note explicitly call out a use case that matches the current prompt? A comment that directly mentions the prompt's context (e.g. "good for onboarding" when the prompt is about onboarding) should boost this item's relevance above tag/description-only matches.
 
-For each selected item, identify the specific phrase in the original prompt it best annotates. Rewrite the prompt with inline annotations:
+For each selected item, identify the specific phrase in the original prompt it best annotates. Rewrite the prompt with inline annotations using these rules:
+
 - If item has `source_url`: `[see: Title](source_url)`
 - If no `source_url` but has glossary: `[see: Title — term1, term2, ...]` (first 3 glossary terms)
 - If neither: `[see: Title]`
+
+**Prefer replacing over appending.** When the matched phrase is a verbose description of a visual technique, replace it with a tighter label + the reference — don't just tack the link onto the end of a long sentence. Examples:
+- `smooth Perlin drift that creates organic-feeling movement` → `smooth drift [see: Procedural Noise Texture](url)`
+- `interpolate smoothly between the two states like a continuous fader` → `lerp between states [see: Order vs. Chaos — Interactive Dot Interpolation](url)`
+
+When the matched phrase is a structural spec (numbers, named states, performance targets, exact parameters), annotate inline without shortening — specs need their precision.
+
+Only append a reference at the end of a sentence if there is no natural phrase to anchor it to.
+
+**Goal: the enhanced prompt should be the same length or shorter than the original, not longer.**
 
 ### 6. Check if web search fallback is needed
 
