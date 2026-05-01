@@ -41,14 +41,26 @@ Keep questions short and scannable. Wait for the answer, then incorporate it int
 
 If the prompt is specific enough, skip this step.
 
-### 3. Read the repo
+### 3. Check for updates
+
+Run:
+```bash
+cd ~/hi-fi-skills 2>/dev/null && git fetch origin --quiet 2>/dev/null && git status -sb 2>/dev/null
+```
+
+If the output contains `[behind` (e.g. `## main...origin/main [behind 2]`), show this note:
+> ℹ️ Your hi-fi repo has new items from teammates. Run `cd ~/hi-fi-skills && git pull` to get them.
+
+Then continue regardless — don't block. If git isn't configured or the command fails, skip silently.
+
+### 4. Read the repo
 
 Read the file at `~/.claude/skills/hi-fi/REPO.md`.
 
 - If the file is missing or the Items section is empty: report and stop.
   > "Your hi-fi repo is empty. Run `/hi-fi-extract <url>` to add items, or `/hi-fi sync` to pull from the hi-fi-me server (if it's running)."
 
-### 4. Match items to the prompt
+### 5. Match items to the prompt
 
 From the REPO.md entries, select the 3–5 most relevant items for the prompt. Consider:
 - **Description** — does the visual/technical approach match what the prompt is asking for?
@@ -60,11 +72,11 @@ For each selected item, identify the specific phrase in the original prompt it b
 - If no `source_url` but has glossary: `[see: Title — term1, term2, ...]` (first 3 glossary terms)
 - If neither: `[see: Title]`
 
-### 5. Check if web search fallback is needed
+### 6. Check if web search fallback is needed
 
-If you found fewer than 2 good matches from the repo, proceed to step 6. Otherwise skip to step 7.
+If you found fewer than 2 good matches from the repo, proceed to step 7. Otherwise skip to step 8.
 
-### 6. Web search fallback
+### 7. Web search fallback
 
 Extract 2-4 key visual/technical concepts from the prompt (e.g. "swarm animation", "particle simulation", "flocking behavior"). Build a search query constraining to high-quality reference sites:
 
@@ -79,11 +91,11 @@ Run 1–2 searches using the WebSearch tool. Discard results that are:
 
 Keep only results linking directly to a live demo, interactive example, or high-quality visual reference. Aim for 2–3 web references maximum.
 
-### 7. Present results
+### 8. Present results
 
 See **Output Format** below.
 
-### 8. Error fallback
+### 9. Error fallback
 
 If REPO.md can't be read for any reason, report the error and stop. Don't fabricate suggestions.
 
