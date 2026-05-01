@@ -17,7 +17,7 @@ The shared inspiration catalog lives in `hi-fi-me/REPO.md`. Everyone's additions
 
 ```bash
 # 1. Clone this repo
-git clone https://github.com/YOUR-ORG/hi-fi-skills.git ~/hi-fi-skills
+git clone https://github.com/sarahyuanzhang/hi-fi-skills.git ~/hi-fi-skills
 
 # 2. Symlink skill folders into Claude's skills directory
 ln -sf ~/hi-fi-skills/hi-fi-me ~/.claude/skills/hi-fi-me
