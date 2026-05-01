@@ -1,17 +1,19 @@
 ---
-name: hi-fi
-description: Enhances a UI-building prompt with visual inspiration references from the shared hi-fi inspiration repo. Invoke when the user says "hi-fi my prompt", "hi-fi this", "enhance this prompt with inspiration", "add visual references", "/hi-fi", or provides a UI design prompt and wants to enrich it with concrete references. Also trigger when the user is about to send a prompt to an AI agent for building UI and wants to inject relevant visual/code references first.
+name: hi-fi-me
+description: Enhances a UI-building prompt with visual inspiration references from your hi-fi inspiration repo. Invoke when the user says "hi-fi my prompt", "hi-fi this", "enhance this prompt with inspiration", "add visual references", "/hi-fi-me", or provides a UI design prompt and wants to enrich it with concrete references. Also trigger when the user is about to send a prompt to an AI agent for building UI and wants to inject relevant visual/code references first. The skill reads from a local REPO.md file and returns a numbered list of suggestions plus the full annotated prompt. Also handles subcommands: "/hi-fi-me show" (open gallery in browser), "/hi-fi-me sync" (pull from hi-fi-me server into REPO.md).
 ---
-
-> **Setup:** Replace `YOUR_GITHUB_USERNAME` in step 3 below with the GitHub username where the
-> hi-fi-skills repo is hosted. Do this once before pasting these instructions into your Project.
->
-> Note: Gallery view (`/hi-fi show`) and sync (`/hi-fi sync`) require Claude Code. To extract
-> and add new items to the repo, use `/hi-fi-extract` in Claude Code (terminal).
 
 # Hi-fi Prompt Enhancer
 
-This skill pipes a UI-building prompt through the shared hi-fi inspiration repo and returns it annotated with concrete visual references — making prompts for AI agents more specific and grounded in real design patterns.
+This skill pipes a UI-building prompt through your hi-fi inspiration repo and returns it annotated with concrete visual references — making prompts for AI agents more specific and grounded in real design patterns.
+
+## Subcommands
+
+Before doing anything else, check if a subcommand is being invoked:
+
+- **`/hi-fi show`** (also: "show me my inspo", "show the repo", "hi-fi gallery") → go to **[Show Gallery](#show-gallery)**
+- **`/hi-fi sync`** (also: "sync from server", "pull from hi-fi-me") → go to **[Sync from Server](#sync-from-server)**
+- Anything else → continue with the prompt enhancement workflow below
 
 ---
 
@@ -39,21 +41,26 @@ Keep questions short and scannable. Wait for the answer, then incorporate it int
 
 If the prompt is specific enough, skip this step.
 
-### 3. Fetch the repo
+### 3. Check for updates
 
-Use the **WebFetch** tool to retrieve:
+Run:
+```bash
+cd ~/hi-fi-skills 2>/dev/null && git fetch origin --quiet 2>/dev/null && git status -sb 2>/dev/null
 ```
-https://raw.githubusercontent.com/YOUR_GITHUB_USERNAME/hi-fi-skills/main/hi-fi/REPO.md
-```
 
-This always returns the latest version of the catalog — no local setup or `git pull` needed.
+If the output contains `[behind` (e.g. `## main...origin/main [behind 2]`), show this note:
+> ℹ️ Your hi-fi repo has new items from teammates. Run `cd ~/hi-fi-skills && git pull` to get them.
 
-- If the fetch fails (404, network error): report the error and stop.
-  > "Couldn't fetch the hi-fi repo from GitHub. Check that the URL in your Project instructions has the correct GitHub username."
-- If the Items section is empty: report and stop.
-  > "The hi-fi repo is empty. Add items using `/hi-fi-extract` in Claude Code."
+Then continue regardless — don't block. If git isn't configured or the command fails, skip silently.
 
-### 4. Match items to the prompt
+### 4. Read the repo
+
+Read the file at `~/.claude/skills/hi-fi/REPO.md`.
+
+- If the file is missing or the Items section is empty: report and stop.
+  > "Your hi-fi repo is empty. Run `/hi-fi-extract <url>` to add items, or `/hi-fi sync` to pull from the hi-fi-me server (if it's running)."
+
+### 5. Match items to the prompt
 
 From the REPO.md entries, select the 3–5 most relevant items for the prompt. Consider:
 - **Description** — does the visual/technical approach match what the prompt is asking for?
@@ -77,11 +84,11 @@ Only append a reference at the end of a sentence if there is no natural phrase t
 
 **Goal: the enhanced prompt should be the same length or shorter than the original, not longer.**
 
-### 5. Check if web search fallback is needed
+### 6. Check if web search fallback is needed
 
-If you found fewer than 2 good matches from the repo, proceed to step 6. Otherwise skip to step 7.
+If you found fewer than 2 good matches from the repo, proceed to step 7. Otherwise skip to step 8.
 
-### 6. Web search fallback
+### 7. Web search fallback
 
 Extract 2-4 key visual/technical concepts from the prompt (e.g. "swarm animation", "particle simulation", "flocking behavior"). Build a search query constraining to high-quality reference sites:
 
@@ -96,13 +103,13 @@ Run 1–2 searches using the WebSearch tool. Discard results that are:
 
 Keep only results linking directly to a live demo, interactive example, or high-quality visual reference. Aim for 2–3 web references maximum.
 
-### 7. Present results
+### 8. Present results
 
 See **Output Format** below.
 
-### 8. Error fallback
+### 9. Error fallback
 
-If the repo can't be fetched for any reason, report the error and stop. Don't fabricate suggestions.
+If REPO.md can't be read for any reason, report the error and stop. Don't fabricate suggestions.
 
 ---
 
@@ -133,7 +140,7 @@ Present results exactly like this:
 
 *(repeat for each web reference, max 3)*
 
-> Want to save any of these? Run `/hi-fi-extract <url>` in Claude Code to add it to the shared repo.
+> Want to save any of these? Run `/hi-fi-extract <url>` to extract and add it to your repo.
 
 ## Enhanced prompt
 
@@ -146,3 +153,63 @@ Present results exactly like this:
 The enhanced prompt has inline annotations as `[see: Title](url)` markdown links or `[see: Title — term1, term2]`. Paste it as-is. Keep it in a fenced code block for easy copying.
 
 Web references are **not** injected into the enhanced prompt automatically — present them separately to decide whether to paste them in manually.
+
+---
+
+## Show Gallery
+
+Read `~/.claude/skills/hi-fi/REPO.md` and generate a self-contained HTML file at `/tmp/hi-fi-gallery.html`.
+
+**Style:**
+- Background: `#000000`, text: `#ffffff`
+- Font: `font-family: monospace` throughout — titles, descriptions, tags, everything
+- No colors beyond black and white (links can be `#ffffff` underlined)
+- Minimal, like a printed reference sheet
+
+**Layout:**
+- 3-column grid, no search, no filter controls
+- Each card:
+  - Thumbnail image (full width of card, aspect-ratio ~16/10, `object-fit: cover`)
+  - Title (bold, mono, larger)
+  - Description (first 2 sentences, truncated)
+  - Tags as plain inline text: `#tag1 #tag2 #tag3`
+  - Source link: `↗ source_url` as a plain `<a>` link (omit if no source_url)
+- Cards separated by a thin `1px solid #333` border
+- Modest padding, tight layout
+
+After writing the file, run:
+```bash
+open /tmp/hi-fi-gallery.html
+```
+
+Report: "Opened gallery in your browser — N items."
+
+---
+
+## Sync from Server
+
+*(Optional — only needed if you run hi-fi-me locally or have a deployed instance)*
+
+Pull items from a hi-fi-me server into REPO.md.
+
+1. Check the server:
+   ```bash
+   curl -s -o /dev/null -w "%{http_code}" http://localhost:3000/api/export
+   ```
+   If not 200, report that the server isn't running and stop.
+
+2. Fetch all items:
+   ```bash
+   curl -s http://localhost:3000/api/export
+   ```
+   This returns REPO.md-formatted entries as plain text.
+
+3. Read the current `~/.claude/skills/hi-fi/REPO.md`. Parse existing item ids from frontmatter.
+
+4. For each item from the server:
+   - If its `id` already exists in REPO.md: update the title, description, categories, tags, thumbnail_url — but **preserve** any existing `**Glossary:**` section for that entry (glossary was hand-enriched, don't overwrite it)
+   - If its `id` is new: append it as a new entry
+
+5. Write the merged result back to REPO.md.
+
+6. Report: "Synced N items (X new, Y updated) to REPO.md."
