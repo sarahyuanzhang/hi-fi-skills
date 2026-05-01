@@ -111,8 +111,14 @@ When confirmed (e.g. "save it", "looks good", "yes", "ship it"):
 
 Report: "Added **[title]** to your hi-fi repo. You now have N items."
 
-Then suggest sharing it with teammates if applicable:
-> "To share with teammates: `cd ~/hi-fi-skills && git commit -am 'add: [title]' && git push`"
+Then auto-commit and push:
+```bash
+cd ~/hi-fi-skills && git add hi-fi/REPO.md && git commit -m "add: [title]" && git push 2>&1
+```
+
+- If it succeeds: report "Pushed to the shared repo ✓"
+- If the push fails (no remote, auth error, etc.): report "Saved locally. To share: `cd ~/hi-fi-skills && git push`"
+- If `~/hi-fi-skills` isn't a git repo: skip silently
 
 ---
 
